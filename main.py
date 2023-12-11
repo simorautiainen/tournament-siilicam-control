@@ -5,8 +5,6 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 siilicamController = SiiliCameraController()
 steamIdToPc = dict()
-steamIdToPc["76561198110404445"] = 2
-steamIdToPc["76561198144054499"] = 1
 
 stateData = dict()
 stateData["steamId"] = 0
