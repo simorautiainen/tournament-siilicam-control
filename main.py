@@ -13,6 +13,9 @@ stateData["isHidden"] = -1
 
 siiliCamToControl = "tournament siili"
 
+steamIdToPc["76561198060328094"] = 1
+steamIdToPc["76561198087011619"] = 2
+
 def get_selected_player(players):
     for player_id, playerdata in players.items():
             if playerdata["selected_unit"]:
@@ -49,6 +52,11 @@ def spectator_endpoint():
                         siilicamController.set_camera_visibility(siiliCamToControl, True)
                         stateData["isHidden"] = False
                         stateData["pcId"] = pcId
+                    else:
+                        if stateData["isHidden"] == False:
+                            result = siilicamController.set_camera_visibility(siiliCamToControl, False)
+                            if result != None:
+                                stateData["isHidden"] = True
                 elif stateData["isHidden"] == True:
                     siilicamController.set_camera_visibility(siiliCamToControl, True)
                     stateData["isHidden"] = False

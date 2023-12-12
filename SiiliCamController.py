@@ -44,7 +44,7 @@ class SiiliCameraController:
             response.raise_for_status()
             return response.json()
         except requests.RequestException as e:
-            print(f"Error setting camera source: {e} {response}")
+            print(f"Error setting camera source: {e} {response.json()}")
             return None
     def set_camera_visibility(self, camera_name, visibility: bool):
         """Hides or shows the siilicamera source."""
@@ -57,7 +57,7 @@ class SiiliCameraController:
             response.raise_for_status()
             return response.json()
         except requests.RequestException as e:
-            print(f"Error setting camera source: {e} {response}")
+            print(f"Error setting camera source: {e} {response.json()}")
             return None
     def stop(self):
         self.session.close()
