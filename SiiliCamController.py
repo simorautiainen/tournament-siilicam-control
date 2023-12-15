@@ -59,6 +59,19 @@ class SiiliCameraController:
         except requests.RequestException as e:
             print(f"Error setting camera source: {e} {response.json()}")
             return None
+    def set_text(self, text_source_name: str, text: str):
+        """set text source text."""
+        try:
+            payload = {
+                'textSourceName': text_source_name,
+                'text': text
+            }
+            response = self.session.post(f'{self.base_url}/setText', json=payload)
+            response.raise_for_status()
+            return response.json()
+        except requests.RequestException as e:
+            print(f"error settings text: {e} {response.json()}")
+            return None
     def stop(self):
         self.session.close()
         

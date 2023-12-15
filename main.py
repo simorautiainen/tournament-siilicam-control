@@ -13,9 +13,8 @@ stateData["isHidden"] = -1
 
 siiliCamToControl = "tournament siili"
 
-steamIdToPc["76561198060328094"] = 1
-steamIdToPc["76561198087011619"] = 2
-
+steamIdToPc["76561198051995905"] = 1
+steamIdToPc["76561198077199743"] = 2
 def get_selected_player(players):
     for player_id, playerdata in players.items():
             if playerdata["selected_unit"]:
@@ -32,6 +31,7 @@ def spectator_endpoint():
     playerdata = data["player"]
     #pprint(pformat(data))
     steamid = ""
+    name = ""
     for team_name, players in herodata.items():
         selected_player = get_selected_player(players)
         if selected_player != None:
@@ -49,12 +49,14 @@ def spectator_endpoint():
                     result = siilicamController.set_camera_source_substring(siiliCamToControl, f"pc{steamIdToPc[steamid]}")
                     
                     if result != None:
+                        siilicamController.set_text("text", name)
                         siilicamController.set_camera_visibility(siiliCamToControl, True)
                         stateData["isHidden"] = False
                         stateData["pcId"] = pcId
                     else:
                         if stateData["isHidden"] == False:
                             result = siilicamController.set_camera_visibility(siiliCamToControl, False)
+                            siilicamController.set_text("text", "")
                             if result != None:
                                 stateData["isHidden"] = True
                 elif stateData["isHidden"] == True:
@@ -67,13 +69,15 @@ def spectator_endpoint():
             if stateData["isHidden"] != True:
                 stateData["isHidden"] = True
                 siilicamController.set_camera_visibility(siiliCamToControl, False)
+                siilicamController.set_text("text", "")
             print(f"player gsi not setupped properly with steamid {steamid}")
     else:
         if stateData["isHidden"] != True:
             print("sending hidden")
             stateData["isHidden"] = True
+            
             siilicamController.set_camera_visibility(siiliCamToControl, False)
-
+            siilicamController.set_text("text", "")
     return {"message": "good"}, 400
 
 @app.route('/pc', methods=['POST'])
@@ -101,4 +105,4 @@ def pc_endpoint():
     return jsonify({"message": f"Received pcId: {pc_id}"}), 200
   
 if __name__ == '__main__':
-    app.run(port=6043)
+    app.run(host='0.0.0.0', port=6043)
